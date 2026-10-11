@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechnoDoc — Чесна техніка та збірка ПК без переплат</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfeff',
+                            100: '#cffaff',
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            900: '#164e63',
+                            accent: '#10b981', // emerald contrast
+                        },
+                        dark: {
+                            bg: '#0b0f19',
+                            card: '#111827',
+                            border: '#1f2937',
+                            hover: '#374151'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px -5px rgba(34, 211, 238, 0.15);
+        }
+        .glow-effect-lg {
+            box-shadow: 0 0 50px -10px rgba(34, 211, 238, 0.25);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 50%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            border-image: linear-gradient(to right, #06b6d4, #10b981) 1;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-gray-100 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Header / Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-dark-bg/80 backdrop-blur-md border-b border-dark-border transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 to-brand-accent flex items-center justify-center text-dark-bg font-extrabold text-xl shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black tracking-wider text-white">Techno<span class="gradient-text">Doc</span></span>
+                        <span class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold">Чесна техніка & ПК</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                    <a href="#pains" class="text-gray-300 hover:text-brand-400 transition-colors">Проблеми ринку</a>
+                    <a href="#why-us" class="text-gray-300 hover:text-brand-400 transition-colors">Чому ми</a>
+                    <a href="#calculator" class="text-gray-300 hover:text-brand-400 transition-colors flex items-center gap-1.5">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                        </span>
+                        Конфігуратор
+                    </a>
+                    <a href="#services" class="text-gray-300 hover:text-brand-400 transition-colors">Каталог</a>
+                    <a href="#reviews" class="text-gray-300 hover:text-brand-400 transition-colors">Відгуки</a>
+                    <a href="#contacts" class="text-gray-300 hover:text-brand-400 transition-colors">Контакти</a>
+                </nav>
+
+                <!-- CTA Button -->
+                <div class="hidden sm:flex items-center gap-4">
+                    <button onclick="openModal('Швидка консультація')" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-xl group bg-gradient-to-br from-brand-500 to-brand-accent group-hover:from-brand-500 group-hover:to-brand-accent hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-brand-500/30">
+                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-dark-bg rounded-[10px] group-hover:bg-opacity-0 font-semibold flex items-center gap-2">
+                            <i class="fa-solid fa-phone-volume text-brand-400 group-hover:text-white transition-colors"></i>
+                            Замовити дзвінок
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-dark-card focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-card/95 backdrop-blur-lg border-b border-dark-border px-4 pt-2 pb-6 space-y-3">
+            <a href="#pains" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-dark-bg hover:text-brand-400">Проблеми ринку</a>
+            <a href="#why-us" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-dark-bg hover:text-brand-400">Чому ми</a>
+            <a href="#calculator" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-brand-400 font-semibold hover:bg-dark-bg">Конфігуратор ПК</a>
+            <a href="#services" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-dark-bg hover:text-brand-400">Каталог послуг</a>
+            <a href="#reviews" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-dark-bg hover:text-brand-400">Відгуки</a>
+            <a href="#contacts" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-dark-bg hover:text-brand-400">Контакти</a>
+            <div class="pt-2">
+                <button onclick="openModal('Швидка консультація')" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-dark-bg font-bold text-center">
+                    Консультація експерта
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+        <!-- Background Grid & Lighting Glows -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-brand-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+        <div class="absolute top-1/3 right-10 w-[300px] h-[300px] bg-brand-accent/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Main Content -->
+                <div class="lg:col-span-7 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-400 text-xs sm:text-sm font-semibold mb-6">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Чесна техніка без втюрювання та націнок</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6">
+                        Підберемо комп’ютер чи смартфон <span class="gradient-text">під ваші задачі</span>, а не план продажів
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-gray-400 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Втомлені від консультантів, які намагаються втюрити найдорожче? В **TechnoDoc** працюють інженери, які збережуть ваш бюджет і підберуть ідеальний баланс потужності та ціни.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
+                        <a href="#calculator" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-dark-bg font-extrabold text-base hover:shadow-lg hover:shadow-brand-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-sliders"></i>
+                            Підібрати конфігурацію
+                        </a>
+                        <button onclick="openModal('Консультація з Hero')" class="w-full sm:w-auto px-8 py-4 rounded-xl border border-dark-border bg-dark-card/60 hover:bg-dark-card hover:border-gray-600 text-gray-200 font-semibold text-base transition-all flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-comments text-brand-400"></i>
+                            Безкоштовна порада
+                        </button>
+                    </div>
+
+                    <!-- Badges -->
+                    <div class="pt-6 border-t border-dark-border/60 grid grid-cols-3 gap-4 text-center sm:text-left">
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold text-white font-mono">100%</div>
+                            <div class="text-xs sm:text-sm text-gray-400">Прозорий кошторис</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold text-white font-mono">До 36</div>
+                            <div class="text-xs sm:text-sm text-gray-400">Місяців гарантії</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold text-white font-mono">24/7</div>
+                            <div class="text-xs sm:text-sm text-gray-400">Тестування перед видачею</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Visual / Mock Card -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none rounded-2xl bg-gradient-to-b from-dark-card to-dark-bg p-1 border border-dark-border glow-effect-lg">
+                        <div class="bg-dark-card/90 rounded-xl p-6 relative overflow-hidden">
+                            <!-- Top Badge -->
+                            <div class="flex items-center justify-between pb-4 mb-4 border-b border-dark-border">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                                </div>
+                                <span class="text-xs font-mono text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded-full border border-brand-500/20">
+                                    <i class="fa-solid fa-check text-xs mr-1"></i> Оптимальна збірка
+                                </span>
+                            </div>
+
+                            <!-- Showcase Content -->
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4 p-3 rounded-lg bg-dark-bg/60 border border-dark-border">
+                                    <div class="w-12 h-12 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-cpu"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-400">Процесор під задачі</div>
+                                        <div class="text-sm font-semibold text-white">Без переплати за «K» індекси</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-4 p-3 rounded-lg bg-dark-bg/60 border border-dark-border">
+                                    <div class="w-12 h-12 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-memory"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-400">Баланс пам'яті</div>
+                                        <div class="text-sm font-semibold text-white">Швидкий SSD + Двоканальна RAM</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-4 p-3 rounded-lg bg-dark-bg/60 border border-dark-border">
+                                    <div class="w-12 h-12 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-bolt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-400">Відеокарта & Блок живлення</div>
+                                        <div class="text-sm font-semibold text-white">Чесний FPS без перегріву</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 p-4 rounded-xl bg-gradient-to-r from-brand-500/10 to-brand-accent/10 border border-brand-500/20 flex items-center justify-between">
+                                <div>
+                                    <span class="block text-xs text-gray-400">Економія бюджету</span>
+                                    <span class="text-lg font-bold text-brand-accent">до 25-30%</span>
+                                </div>
+                                <i class="fa-solid fa-piggy-bank text-2xl text-brand-accent"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points Section -->
+    <section id="pains" class="py-20 bg-dark-bg/50 border-t border-dark-border relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-red-400 bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">Знайома ситуація?</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">З чим зіштовхуються 90% покупців у звичайних магазинах</h2>
+                <p class="text-gray-400 mt-3 text-base">Більшість ринку працює на комісійні та виконання планів продажів. Ось чому купувати техніку буває так складно:</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="rounded-2xl bg-dark-card p-8 border border-red-500/20 relative group hover:border-red-500/40 transition-all">
+                    <div class="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-user-ninja"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Продавці, а не експерти</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Завдання консультанта великої мережі — втюрити вам залежаний товар або те, за що фабрика виплачує бонуси. Вам радять дорожчі моделі з функціями, якими ви ніколи не скористаєтеся.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="rounded-2xl bg-dark-card p-8 border border-red-500/20 relative group hover:border-red-500/40 transition-all">
+                    <div class="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Страх зібрати перший ПК</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Хочете ігрову або робочу станцію, але плутаєтеся в сокетах, чипсетах і сумісності? Вам пропонують "готові збірки", де стоїть дорога відеокарта разом із дешманським блоком живлення.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="rounded-2xl bg-dark-card p-8 border border-red-500/20 relative group hover:border-red-500/40 transition-all">
+                    <div class="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Приховані переплати та "послуги"</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        "Налаштування ПК" за 3000 грн, платне встановлення браузера чи нав'язування невигідних страховок. У чеку ви виявляєте додаткові витрати, про які ніхто не попереджав.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions / Why Us Section -->
+    <section id="why-us" class="py-20 bg-dark-bg relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-brand-400 bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Формула TechnoDoc</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">Як ми вирішуємо ці проблеми</h2>
+                <p class="text-gray-400 mt-3 text-base">Ми створили сервіс, у якому самі хотіли б купувати техніку як для себе</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Solution 1 -->
+                <div class="rounded-2xl bg-dark-card p-6 border border-dark-border hover:border-brand-500/50 transition-all group hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center text-xl mb-5 group-hover:bg-brand-500 group-hover:text-dark-bg transition-all">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Профі-персонал</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Наші спеціалісти — це фанати заліза та інженери. Вони знають реальну продуктивність кожного комплектуючого і порадять те, що працює.
+                    </p>
+                </div>
+
+                <!-- Solution 2 -->
+                <div class="rounded-2xl bg-dark-card p-6 border border-dark-border hover:border-brand-accent/50 transition-all group hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center text-xl mb-5 group-hover:bg-brand-accent group-hover:text-dark-bg transition-all">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Ідеальна ціна / якість</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Підбираємо рішення під ваш точний бюджет. Жодної гривні за марні маркетинг-функції, які вам не потрібні.
+                    </p>
+                </div>
+
+                <!-- Solution 3 -->
+                <div class="rounded-2xl bg-dark-card p-6 border border-dark-border hover:border-brand-500/50 transition-all group hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center text-xl mb-5 group-hover:bg-brand-500 group-hover:text-dark-bg transition-all">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Прозорий кошторис</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Ви бачите детальну ціну кожної деталі та вартість збірки. Жодних прихованих націнок чи фейкових додаткових послуг.
+                    </p>
+                </div>
+
+                <!-- Solution 4 -->
+                <div class="rounded-2xl bg-dark-card p-6 border border-dark-border hover:border-brand-accent/50 transition-all group hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center text-xl mb-5 group-hover:bg-brand-accent group-hover:text-dark-bg transition-all">
+                        <i class="fa-solid fa-vial-circle-check"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">24h Стрес-тести</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Кожен ПК проходить стрес-тестування температур та стабільності під максимальним навантаженням перед передачею.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Calculator Section -->
+    <section id="calculator" class="py-20 bg-dark-card/30 border-y border-dark-border relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-xs font-bold uppercase tracking-widest text-brand-accent bg-brand-accent/10 px-3 py-1 rounded-full border border-brand-accent/20">Онлайн підбір</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">Інтерактивний Конфігуратор</h2>
+                <p class="text-gray-400 mt-2 text-base">Оберіть ваші потреби, і ми розрахуємо оптимальну конфігурацію за пару секунд</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto bg-dark-card rounded-3xl border border-dark-border p-6 sm:p-10 glow-effect">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    
+                    <!-- Left: Interactive Controls -->
+                    <div class="lg:col-span-7 space-y-8">
+                        
+                        <!-- Step 1: Purpose -->
+                        <div>
+                            <label class="block text-sm font-bold text-gray-200 mb-3 uppercase tracking-wider">
+                                1. Для чого потрібна техніка?
+                            </label>
+                            <div class="grid grid-cols-2 sm:grid-cols-2 gap-3" id="purpose-selector">
+                                <button type="button" onclick="setPurpose('gaming')" class="purpose-btn active p-4 rounded-xl border border-brand-500 bg-brand-500/10 text-left transition-all hover:border-brand-500 flex items-center gap-3">
+                                    <i class="fa-solid fa-gamepad text-brand-400 text-xl"></i>
+                                    <div>
+                                        <div class="text-sm font-bold text-white">Ігри / Стрімінг</div>
+                                        <div class="text-xs text-gray-400">Максимум FPS</div>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="setPurpose('work')" class="purpose-btn p-4 rounded-xl border border-dark-border bg-dark-bg/60 text-left transition-all hover:border-brand-500 flex items-center gap-3">
+                                    <i class="fa-solid fa-laptop-code text-gray-400 text-xl"></i>
+                                    <div>
+                                        <div class="text-sm font-bold text-white">Робота / 3D / Відео</div>
+                                        <div class="text-xs text-gray-400">Потужний CPU & RAM</div>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="setPurpose('office')" class="purpose-btn p-4 rounded-xl border border-dark-border bg-dark-bg/60 text-left transition-all hover:border-brand-500 flex items-center gap-3">
+                                    <i class="fa-solid fa-briefcase text-gray-400 text-xl"></i>
+                                    <div>
+                                        <div class="text-sm font-bold text-white">Навчання / Офіс</div>
+                                        <div class="text-xs text-gray-400">Надійність та тиша</div>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="setPurpose('gadgets')" class="purpose-btn p-4 rounded-xl border border-dark-border bg-dark-bg/60 text-left transition-all hover:border-brand-500 flex items-center gap-3">
+                                    <i class="fa-solid fa-mobile-screen-button text-gray-400 text-xl"></i>
+                                    <div>
+                                        <div class="text-sm font-bold text-white">Смартфон / Ноутбук</div>
+                                        <div class="text-xs text-gray-400">Мобільність</div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Budget Slider -->
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <label class="text-sm font-bold text-gray-200 uppercase tracking-wider">
+                                    2. Орієнтовний бюджет:
+                                </label>
+                                <span id="budget-value" class="text-xl font-extrabold text-brand-400 font-mono">35,000 ₴</span>
+                            </div>
+                            <input type="range" id="budget-range" min="15000" max="120000" step="5000" value="35000" oninput="updateCalculator()" class="w-full h-2 bg-dark-border rounded-lg appearance-none cursor-pointer accent-brand-500">
+                            <div class="flex justify-between text-xs text-gray-500 mt-2 font-mono">
+                                <span>15,000 ₴</span>
+                                <span>50,000 ₴</span>
+                                <span>100,000+ ₴</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Preferences Checkboxes -->
+                        <div>
+                            <label class="block text-sm font-bold text-gray-200 mb-3 uppercase tracking-wider">
+                                3. Додаткові вподобання:
+                            </label>
+                            <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm">
+                                <label class="flex items-center gap-2.5 p-3 rounded-lg bg-dark-bg/50 border border-dark-border cursor-pointer hover:border-gray-600">
+                                    <input type="checkbox" id="pref-quiet" onchange="updateCalculator()" class="rounded border-gray-700 text-brand-500 focus:ring-brand-500 bg-dark-bg">
+                                    <span class="text-gray-300">Тиха робота</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-3 rounded-lg bg-dark-bg/50 border border-dark-border cursor-pointer hover:border-gray-600">
+                                    <input type="checkbox" id="pref-rgb" onchange="updateCalculator()" class="rounded border-gray-700 text-brand-500 focus:ring-brand-500 bg-dark-bg" checked>
+                                    <span class="text-gray-300">RGB підсвітка</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-3 rounded-lg bg-dark-bg/50 border border-dark-border cursor-pointer hover:border-gray-600">
+                                    <input type="checkbox" id="pref-compact" onchange="updateCalculator()" class="rounded border-gray-700 text-brand-500 focus:ring-brand-500 bg-dark-bg">
+                                    <span class="text-gray-300">Компактність</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-3 rounded-lg bg-dark-bg/50 border border-dark-border cursor-pointer hover:border-gray-600">
+                                    <input type="checkbox" id="pref-upgrade" onchange="updateCalculator()" class="rounded border-gray-700 text-brand-500 focus:ring-brand-500 bg-dark-bg" checked>
+                                    <span class="text-gray-300">Запас під апгрейд</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Recommended Result & Form -->
+                    <div class="lg:col-span-5 bg-dark-bg/80 rounded-2xl p-6 border border-dark-border flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between pb-3 mb-4 border-b border-dark-border">
+                                <span class="text-xs font-bold text-gray-400 uppercase">Рекомендована збірка</span>
+                                <span class="text-xs text-brand-accent font-semibold"><i class="fa-solid fa-check-double mr-1"></i> Гарантія сумісності</span>
+                            </div>
+
+                            <!-- Calc Output -->
+                            <div class="space-y-3 mb-6">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-400"><i class="fa-solid fa-microchip w-5 text-brand-400"></i> Процесор:</span>
+                                    <span id="res-cpu" class="font-semibold text-white">Core i5 / Ryzen 5</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-400"><i class="fa-solid fa-tv w-5 text-brand-400"></i> Відеокарта:</span>
+                                    <span id="res-gpu" class="font-semibold text-white">RTX 4060 8GB</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-400"><i class="fa-solid fa-memory w-5 text-brand-400"></i> ОЗП (RAM):</span>
+                                    <span id="res-ram" class="font-semibold text-white">16 GB DDR4/DDR5</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-400"><i class="fa-solid fa-hard-drive w-5 text-brand-400"></i> Накопичувач:</span>
+                                    <span id="res-ssd" class="font-semibold text-white">1 TB NVMe M.2</span>
+                                </div>
+                            </div>
+
+                            <div class="p-3 bg-brand-500/10 rounded-xl border border-brand-500/20 text-xs text-brand-400 mb-6">
+                                <i class="fa-solid fa-info-circle mr-1"></i> Збірка включає кабель-менеджмент, тестування та встановлення ОС за запитом.
+                            </div>
+                        </div>
+
+                        <!-- Quick Lead Form -->
+                        <form id="calc-form" onsubmit="handleCalcSubmit(event)" class="space-y-3">
+                            <input type="text" id="calc-name" required placeholder="Ваше ім'я" class="w-full px-4 py-2.5 rounded-xl bg-dark-card border border-dark-border text-white text-sm focus:outline-none focus:border-brand-500">
+                            <input type="tel" id="calc-phone" required placeholder="Телефон або Telegram (@username)" class="w-full px-4 py-2.5 rounded-xl bg-dark-card border border-dark-border text-white text-sm focus:outline-none focus:border-brand-500">
+                            
+                            <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-dark-bg font-extrabold text-sm hover:opacity-95 transition-opacity">
+                                Отримати точний розрахунок у Месенджер
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services / Catalog Showcase -->
+    <section id="services" class="py-20 bg-dark-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-brand-400 bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Наші напрямки</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">Послуги та товари TechnoDoc</h2>
+                <p class="text-gray-400 mt-2 text-base">Обирайте готові рішення або замовляйте індивідуальний підбір</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Category 1 -->
+                <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden group hover:border-brand-500/50 transition-all flex flex-col justify-between">
+                    <div class="p-6">
+                        <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-desktop"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Кастомні ПК</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Від бюджетних ігрових машин до ультра-потужних рендер-станцій з індивідуальним кабель-менеджментом.
+                        </p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                            <li><i class="fa-solid fa-check text-brand-400 mr-2"></i>Бюджетні ігрові (від 18,000 ₴)</li>
+                            <li><i class="fa-solid fa-check text-brand-400 mr-2"></i>Mid-Range графічні ПК</li>
+                            <li><i class="fa-solid fa-check text-brand-400 mr-2"></i>Top-Tier для 4K геймінгу</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('Кастомні ПК')" class="w-full py-2.5 rounded-xl border border-brand-500/30 bg-brand-500/10 text-brand-400 hover:bg-brand-500 hover:text-dark-bg font-semibold text-sm transition-all">
+                            Замовити збірку
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden group hover:border-brand-500/50 transition-all flex flex-col justify-between">
+                    <div class="p-6">
+                        <div class="w-12 h-12 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-laptop"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Ноутбуки</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Чесний підбір нових та протестованих ноутбуків для навчання, офісу та автономної роботи.
+                        </p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                            <li><i class="fa-solid fa-check text-brand-accent mr-2"></i>Перевірка матриці та батареї</li>
+                            <li><i class="fa-solid fa-check text-brand-accent mr-2"></i>Чистка та гравіювання клавіатури</li>
+                            <li><i class="fa-solid fa-check text-brand-accent mr-2"></i>Гарантія від магазину</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('Підбір Ноутбука')" class="w-full py-2.5 rounded-xl border border-brand-accent/30 bg-brand-accent/10 text-brand-accent hover:bg-brand-accent hover:text-dark-bg font-semibold text-sm transition-all">
+                            Підібрати ноутбук
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden group hover:border-brand-500/50 transition-all flex flex-col justify-between">
+                    <div class="p-6">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Смартфони</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Тільки надійні смартфони (iOS / Android) без переплати за надлишкові функції.
+                        </p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                            <li><i class="fa-solid fa-check text-purple-400 mr-2"></i>Перенесення даних безкоштовно</li>
+                            <li><i class="fa-solid fa-check text-purple-400 mr-2"></i>Захисне скло у подарунок</li>
+                            <li><i class="fa-solid fa-check text-purple-400 mr-2"></i>Офіційна техніка</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('Смартфони')" class="w-full py-2.5 rounded-xl border border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500 hover:text-dark-bg font-semibold text-sm transition-all">
+                            Обрати смартфон
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden group hover:border-brand-500/50 transition-all flex flex-col justify-between">
+                    <div class="p-6">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-wrench"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Апгрейд & Сервіс</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Ваш старий ПК гальмує? Зробимо точкову модернізацію (заміна SSD/GPU/CPU) замість купівлі нового.
+                        </p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                            <li><i class="fa-solid fa-check text-amber-400 mr-2"></i>Безкоштовна діагностика</li>
+                            <li><i class="fa-solid fa-check text-amber-400 mr-2"></i>Заміна термопасти Phase Change</li>
+                            <li><i class="fa-solid fa-check text-amber-400 mr-2"></i>Чистка від пилу</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('Апгрейд та Сервіс')" class="w-full py-2.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-400 hover:bg-amber-500 hover:text-dark-bg font-semibold text-sm transition-all">
+                            Записатися на сервіс
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-20 bg-dark-bg/60 border-t border-dark-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-brand-400 bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Відгуки клієнтів</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">Що про нас кажуть покупці</h2>
+                <p class="text-gray-400 mt-2 text-base">Чесна репутація — наш головний актив</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-dark-card p-6 rounded-2xl border border-dark-border relative">
+                    <div class="flex items-center gap-1 text-amber-400 text-sm mb-4">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">
+                        "Збирали перший ПК для сина. У великому супермаркеті нарахували 45,000 грн. Звернувся в TechnoDoc: хлопці пояснили, що там була дорога плата і непотрібна підсвітка. Зібрали аналогічний за потужністю ПК за 32,000 грн! Дуже вдячний за чесність."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-brand-500/20 text-brand-400 font-bold flex items-center justify-center">ОМ</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Олександр М.</div>
+                            <div class="text-xs text-gray-500">Купив ігровий ПК</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-dark-card p-6 rounded-2xl border border-dark-border relative">
+                    <div class="flex items-center gap-1 text-amber-400 text-sm mb-4">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">
+                        "Я взагалі не розуміюся на процесорах чи ноутах. Мені потрібен був ноутбук для відеомонтажу. В TechnoDoc не стали говорити складними термінами, а просто підібрали ідеальний варіант під мій бюджет. Всі програми вже були налаштовані!"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-brand-accent/20 text-brand-accent font-bold flex items-center justify-center">КВ</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Катерина В.</div>
+                            <div class="text-xs text-gray-500">Придбала ноутбук</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-dark-card p-6 rounded-2xl border border-dark-border relative">
+                    <div class="flex items-center gap-1 text-amber-400 text-sm mb-4">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">
+                        "Зробив апгрейд старого ПК (додали SSD, поміняли карту та оперативку). Комп’ютер просто літає! Сподобалося, що не намагалися втюрити повністю нову систему, а врятували мою."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center">ДП</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Дмитро П.</div>
+                            <div class="text-xs text-gray-500">Послуга апгрейду</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer Section -->
+    <section id="contacts" class="py-20 bg-dark-bg relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Info Left -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-brand-400 bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Контакти</span>
+                        <h2 class="text-3xl font-extrabold text-white mt-4">Завітайте або напишіть нам</h2>
+                        <p class="text-gray-400 text-sm mt-2">Ми завжди готові надати безкоштовну консультацію у зручному для вас месенджері.</p>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-dark-card border border-dark-border text-brand-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-400">Адреса магазину</div>
+                                <div class="text-sm font-semibold text-white">м. Київ, вул. Технологічна, 15 (м. Почайна)</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-dark-card border border-dark-border text-brand-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-400">Телефон для зв'язку</div>
+                                <div class="text-sm font-semibold text-white">+380 (44) 123-45-67 / +380 (67) 987-65-43</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-dark-card border border-dark-border text-brand-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-400">Графік роботи</div>
+                                <div class="text-sm font-semibold text-white">Пн - Нд: 10:00 — 20:00 (без вихідних)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messenger Links -->
+                    <div class="pt-4">
+                        <div class="text-xs text-gray-400 mb-3">Швидкий зв'язок у месенджерах:</div>
+                        <div class="flex gap-3">
+                            <a href="#" class="px-4 py-2.5 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 hover:bg-sky-500 hover:text-white text-sm font-semibold transition-all flex items-center gap-2">
+                                <i class="fa-brands fa-telegram text-lg"></i> Telegram
+                            </a>
+                            <a href="#" class="px-4 py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 hover:bg-purple-500 hover:text-white text-sm font-semibold transition-all flex items-center gap-2">
+                                <i class="fa-brands fa-viber text-lg"></i> Viber
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Contact Form Right -->
+                <div class="lg:col-span-7 bg-dark-card p-8 rounded-3xl border border-dark-border">
+                    <h3 class="text-2xl font-bold text-white mb-2">Отримати безкоштовну консультацію</h3>
+                    <p class="text-gray-400 text-sm mb-6">Залиште заявку, і наш інженер зателефонує вам протягом 10 хвилин.</p>
+
+                    <form onsubmit="handleMainForm(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Ім'я</label>
+                                <input type="text" required placeholder="Ваше ім'я" class="w-full px-4 py-3 rounded-xl bg-dark-bg border border-dark-border text-white text-sm focus:outline-none focus:border-brand-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Номер телефону</label>
+                                <input type="tel" required placeholder="+380 (__) ___-__-__" class="w-full px-4 py-3 rounded-xl bg-dark-bg border border-dark-border text-white text-sm focus:outline-none focus:border-brand-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Що саме вас цікавить?</label>
+                            <select class="w-full px-4 py-3 rounded-xl bg-dark-bg border border-dark-border text-white text-sm focus:outline-none focus:border-brand-500">
+                                <option>Збірка нового ПК</option>
+                                <option>Підбір ноутбука</option>
+                                <option>Купівля смартфона</option>
+                                <option>Апгрейд / Ремонт ПК</option>
+                                <option>Просто потрібна порада експерта</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Коментар або бюджет (необов'язково)</label>
+                            <textarea rows="3" placeholder="Опишіть ваші завдання або бажаний бюджет..." class="w-full px-4 py-3 rounded-xl bg-dark-bg border border-dark-border text-white text-sm focus:outline-none focus:border-brand-500"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-dark-bg font-extrabold text-base hover:shadow-lg hover:shadow-brand-500/20 transition-all">
+                            Надіслати заявку
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="mt-16 pt-8 border-t border-dark-border/60 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+                <div>© 2026 TechnoDoc. Усі права захищені. Чесний комп'ютерний магазин.</div>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-gray-300">Політика конфіденційності</a>
+                    <a href="#" class="hover:text-gray-300">Умови гарантії</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Dialog for quick forms -->
+    <div id="modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-dark-card border border-dark-border rounded-3xl max-w-md w-full p-6 relative glow-effect">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            
+            <h3 id="modal-title" class="text-xl font-bold text-white mb-2">Швидка консультація</h3>
+            <p class="text-gray-400 text-xs mb-6">Вкажіть контактні дані і наш інженер зв'яжеться з вами.</p>
+
+            <form onsubmit="handleModalSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Ваше ім'я</label>
+                    <input type="text" required placeholder="Ім'я" class="w-full px-4 py-3 rounded-xl bg-dark-bg border border-dark-border text-white text-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Телефон або Telegram</label>
+                    <input type="text" required placeholder="+380 або @username" class="w-full px-4 py-3 rounded-xl bg-dark-bg border border-dark-border text-white text-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-dark-bg font-extrabold text-sm hover:opacity-95">
+                    Замовити консультацію
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-brand-accent text-dark-bg font-bold px-6 py-3.5 rounded-2xl shadow-xl flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-xl"></i>
+        <span id="toast-message">Дякуємо! Заявку успішно відправлено.</span>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Calculator state logic
+        let currentPurpose = 'gaming';
+
+        const configs = {
+            gaming: {
+                low: { cpu: "Core i3-13100F / Ryzen 5 3600", gpu: "GTX 1660 Super / RX 6600", ram: "16 GB DDR4", ssd: "500 GB NVMe" },
+                mid: { cpu: "Core i5-13400F / Ryzen 5 7600", gpu: "RTX 4060 8GB / RX 7600", ram: "16 GB / 32 GB DDR5", ssd: "1 TB NVMe M.2" },
+                high: { cpu: "Core i7-14700K / Ryzen 7 7800X3D", gpu: "RTX 4070 Ti Super / RTX 4080", ram: "32 GB DDR5 6000MHz", ssd: "2 TB Gen4 NVMe" }
+            },
+            work: {
+                low: { cpu: "Core i5-12400 / Ryzen 5 5600G", gpu: "Вбудована / GTX 1650", ram: "16 GB DDR4", ssd: "512 GB NVMe" },
+                mid: { cpu: "Core i7-13700 / Ryzen 9 7900X", gpu: "RTX 3060 12GB / RTX 4060 Ti", ram: "32 GB DDR5", ssd: "1 TB High-Speed NVMe" },
+                high: { cpu: "Core i9-14900K / Ryzen 9 7950X", gpu: "RTX 4090 24GB / Quadro", ram: "64 GB DDR5 ECC", ssd: "4 TB NVMe Raid" }
+            },
+            office: {
+                low: { cpu: "Intel Pentium / Core i3", gpu: "Intel UHD Graphics", ram: "8 GB DDR4", ssd: "256 GB SSD" },
+                mid: { cpu: "Core i3-12100 / Ryzen 3 4100", gpu: "Вбудована техніка", ram: "16 GB DDR4", ssd: "512 GB SSD" },
+                high: { cpu: "Core i5-13400", gpu: "Intel Iris Xe", ram: "16 GB DDR5", ssd: "1 TB SSD" }
+            },
+            gadgets: {
+                low: { cpu: "Оптимальний смартфон", gpu: "AMOLED 90Hz", ram: "8 GB RAM", ssd: "128 GB" },
+                mid: { cpu: "Ноутбук Core i5 / iPhone 13-14", gpu: "FHD IPS / OLED", ram: "16 GB RAM", ssd: "512 GB SSD" },
+                high: { cpu: "MacBook Pro M3 / iPhone 15 Pro", gpu: "Retina / Ultra Display", ram: "18 GB / 36 GB", ssd: "1 TB" }
+            }
+        };
+
+        function setPurpose(purpose) {
+            currentPurpose = purpose;
+            document.querySelectorAll('.purpose-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-brand-500', 'bg-brand-500/10');
+                btn.classList.add('border-dark-border', 'bg-dark-bg/60');
+            });
+            event.currentTarget.classList.add('active', 'border-brand-500', 'bg-brand-500/10');
+            event.currentTarget.classList.remove('border-dark-border', 'bg-dark-bg/60');
+            updateCalculator();
+        }
+
+        function updateCalculator() {
+            const budget = parseInt(document.getElementById('budget-range').value);
+            document.getElementById('budget-value').innerText = budget.toLocaleString('uk-UA') + ' ₴';
+
+            let tier = 'low';
+            if (budget > 30000 && budget <= 60000) tier = 'mid';
+            if (budget > 60000) tier = 'high';
+
+            const config = configs[currentPurpose][tier];
+            document.getElementById('res-cpu').innerText = config.cpu;
+            document.getElementById('res-gpu').innerText = config.gpu;
+            document.getElementById('res-ram').innerText = config.ram;
+            document.getElementById('res-ssd').innerText = config.ssd;
+        }
+
+        // Modal Controls
+        function openModal(title) {
+            if(title) document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        // Toast display
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if(msg) document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Form Submission Handlers
+        function handleCalcSubmit(e) {
+            e.preventDefault();
+            showToast("Розрахунок збережено! Менеджер надішле детальну кошторисну таблицю.");
+            e.target.reset();
+        }
+
+        function handleMainForm(e) {
+            e.preventDefault();
+            showToast("Дякуємо за заявку! Інженер TechnoDoc зателефонує вам найближчим часом.");
+            e.target.reset();
+        }
+
+        function handleModalSubmit(e) {
+            e.preventDefault();
+            closeModal();
+            showToast("Заявку отримано! Очікуйте на дзвінок.");
+            e.target.reset();
+        }
+
+        // Initialize calculator on page load
+        window.onload = function() {
+            updateCalculator();
+        };
+    </script>
+</body>
+</html>
